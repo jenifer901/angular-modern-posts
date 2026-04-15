@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Post, PostsResponse } from '../models/posts.model';
+import { CreatePost } from '../models/create-post.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,10 @@ export class PostsService {
 
   loadPosts(params: HttpParams): Observable<PostsResponse> {
     return this.http.get<PostsResponse>(`${this.baseUrl}/posts`, { params });
+  }
+
+  createPosts(post: CreatePost): Observable<Post> {
+    return this.http.post<Post>(`${this.baseUrl}/posts`, post);
   }
 
   updatePost(id: string, post: Post) {

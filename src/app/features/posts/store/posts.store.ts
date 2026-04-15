@@ -2,7 +2,9 @@ import { Injectable, signal, computed, inject, effect } from '@angular/core';
 import { Post, PostsResponse } from '../models/posts.model';
 import { PostsService } from '../services/posts.service';
 import { HttpParams } from '@angular/common/http';
+import { CreatePost } from '../models/create-post.model';
 import { PostFiltersForm } from '../components/filters-posts/filters-posts';
+import { Observable, tap } from 'rxjs';
 
 /**
  * uso de signals
@@ -103,6 +105,15 @@ export class PostsStore {
 
   goToPage(page: number) {
     this.loadPosts(page);
+  }
+
+  addPosts(post: CreatePost): Observable<Post> {
+    this._loading.set(true);
+    return this.postService.createPosts({ ...post, userId: '1' }).pipe(
+      tap(() => {
+        this._loading.set(false);
+      }),
+    );
   }
 
   setFilter(filter: PostFiltersForm) {

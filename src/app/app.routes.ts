@@ -17,9 +17,17 @@ export const routes: Routes = [
         loadComponent: () => import('./features/posts/pages/list-post/posts').then((m) => m.Posts),
       },
       {
-        path: '**',
-        redirectTo: '',
+        path: 'posts/new',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./features/posts/pages/create-post/create-post').then(
+            (m) => m.CreatePostPageComponent,
+          ),
       },
     ],
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];
