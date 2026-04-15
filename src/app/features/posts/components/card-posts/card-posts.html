@@ -1,0 +1,40 @@
+<a [routerLink]="['/posts', post.id]">
+  <div class="space-y-4">
+    <div class="flex justify-between items-start">
+      <h2 class="text-lg font-semibold text-gray-800">
+        {{ post.title }}
+      </h2>
+
+      <span class="text-xs text-gray-400">
+        {{ post.createdAt | date: 'MMM yyyy' }}
+      </span>
+    </div>
+
+    <p class="text-gray-600 text-sm mt-2 line-clamp-2">
+      {{ post.body }}
+    </p>
+
+    <!-- Footer -->
+    <div class="flex justify-between items-center mt-4">
+      <!-- Author -->
+      <div class="flex items-center gap-2 text-sm text-gray-500">
+        <div
+          class="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs"
+        >
+          <!--TODO: depende de si es el usuario en el login poner un color o otro-->
+          {{ post.userId }}
+        </div>
+        <!--Es necesario concatenar el usuario para meter el nombre y avatar-->
+        Usuario {{ post.userId }}
+      </div>
+      <!-- Tags -->
+      <div class="flex gap-2">
+        @for (tag of post.tags; track tag) {
+          <span class="text-xs px-2 py-1 bg-gray-200 rounded-full text-gray-600">
+            {{ tag }}
+          </span>
+        }
+      </div>
+    </div>
+  </div>
+</a>

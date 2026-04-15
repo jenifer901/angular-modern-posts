@@ -1,0 +1,72 @@
+<div class="min-h-screen bg-gray-100 p-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-800">Lista de posts</h1>
+    </div>
+
+    <div>
+      <!--Filters-->
+      <app-filters-posts (filtersChange)="setFilter($event)" />
+
+      <!--Result view-->
+      <div class="flex justify-end items-center mb-2 text-sm text-gray-600">
+        <span>{{ resultsText() }}</span>
+      </div>
+
+      <div class="flex justify-end mb-4">
+        <button
+          type="button"
+          (click)="addPost()"
+          class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition"
+        >
+          + Añadir
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="text-center py-10 text-gray-500">Cargando...</div>
+    }
+
+    @if (!loading()) {
+      <!--Pots-->
+      <div class="space-y-4">
+        @for (post of posts(); track post.id; let odd = $odd) {
+          <div
+            class="p-5 rounded-xl shadow-sm hover:shadow-md transition border border-gray-200"
+            [class.bg-gray-150]="odd"
+            [class.bg-white]="!odd"
+          >
+            <app-card-posts [post]="post" />
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Pagination -->
+    <div class="flex justify-between items-center mt-8 text-sm text-gray-600">
+      <button
+        (click)="prevPage()"
+        [disabled]="!hasPrev()"
+        class="px-3 py-1 rounded bg-gray-100 disabled:opacity-50"
+      >
+        ← Previous
+      </button>
+
+      <app-pagination-posts
+        [totalPages]="totalPages()"
+        [currentPage]="currentPage()"
+        (pageChange)="goToPage($event)"
+      />
+
+      <button
+        (click)="nextPage()"
+        [disabled]="!hasNext()"
+        class="px-3 py-1 rounded bg-gray-100 disabled:opacity-50"
+      >
+        Next →
+      </button>
+    </div>
+  </div>
+</div>

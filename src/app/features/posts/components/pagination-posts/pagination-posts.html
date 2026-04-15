@@ -1,0 +1,17 @@
+<div class="flex gap-2 items-center">
+  @for (item of items(); track $index) {
+    @if (item.type === 'ellipsis') {
+      <span class="px-2 text-gray-400">...</span>
+    }
+
+    @if (item.type === 'page') {
+      <button
+        (click)="selectPage(item.value)"
+        class="px-3 py-1 rounded text-sm transition"
+        [class]="pageClasses(item.value)"
+      >
+        {{ item.value }}
+      </button>
+    }
+  }
+</div>

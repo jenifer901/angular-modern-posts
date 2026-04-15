@@ -1,0 +1,31 @@
+<div class="flex gap-3 items-center">
+  <!-- Authors -->
+  <select
+    class="min-w-160px rounded-lg border border-gray-300 bg-gray-200 px-3 py-2 text-sm text-gray-700 shadow-sm transition hover:border-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+    [value]="filtersModel().userId"
+    (change)="updateSelect($event, 'userId')"
+  >
+    <option value="">Autores</option>
+
+    @for (author of authors(); track author.id) {
+      <option [value]="author.id">
+        {{ author.name }}
+      </option>
+    }
+  </select>
+
+  <!-- Tags -->
+  <select
+    class="min-w-160px rounded-lg border border-gray-300 bg-gray-200 px-3 py-2 text-sm text-gray-700 shadow-sm transition hover:border-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+    [value]="filtersModel().tag"
+    (change)="updateSelect($event, 'tag')"
+  >
+    <option [value]="null">Tags</option>
+
+    @for (tag of tags(); track tag) {
+      <option [value]="tag">
+        {{ tag }}
+      </option>
+    }
+  </select>
+</div>
