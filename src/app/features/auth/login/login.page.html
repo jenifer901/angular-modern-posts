@@ -1,0 +1,63 @@
+<!-- login container -->
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="flex flex-1 items-center justify-center px-4">
+    <div class="w-full max-w-sm bg-white rounded-xl shadow-md p-8">
+      <!-- title -->
+      <div class="text-center mb-6">
+        <h2 class="text-xl font-semibold text-gray-800">Bienvenido</h2>
+
+        <p class="text-sm text-gray-500">Introduce tus credenciales</p>
+      </div>
+
+      <!-- form -->
+      <form class="space-y-5">
+        <!-- usuario -->
+        <div class="flex flex-col gap-1">
+          <p class="text-xs font-medium text-gray-500">USUARIO</p>
+
+          <div class="relative">
+            <input
+              type="text"
+              placeholder="Usuario"
+              [formField]="loginForm.name"
+              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+
+        <!-- contraseña -->
+        <div class="flex flex-col gap-1">
+          <p class="text-xs font-medium text-gray-500">CONTRASEÑA</p>
+
+          <div class="relative">
+            <input
+              type="password"
+              placeholder="••••••••"
+              [formField]="loginForm.password"
+              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+
+        <!-- error login -->
+        @if (authStore.error()) {
+          <p class="text-sm text-red-500 text-center">Credenciales incorrectas</p>
+        }
+
+        <!-- boton -->
+        <button
+          type="button"
+          (click)="submit()"
+          class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2.5 rounded-lg transition"
+        >
+          @if (authStore.loading()) {
+            <span class="animate-pulse"> Accediendo... </span>
+          } @else {
+            <span>Acceder</span>
+            <span>→</span>
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

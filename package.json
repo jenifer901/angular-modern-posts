@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "dev": "npm run api & npm run start",
     "start": "ng serve",
     "lint": "ng lint",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "api": "json-server db.json --port 3000",
-    "format": "prettier --write",
+    "format": "npx prettier \"src/**/*.{js,jsx,ts,tsx,html}\" --write",
     "prepare": "husky"
   },
   "prettier": {
@@ -24,8 +25,8 @@
       }
     ]
   },
-  "lint-staged" : {
-    "*.{ts,html,css}":[
+  "lint-staged": {
+    "*.{ts,html,css}": [
       "eslint --fix",
       "prettier --write"
     ]
@@ -33,12 +34,18 @@
   "private": true,
   "packageManager": "npm@11.6.2",
   "dependencies": {
+    "@angular-eslint/schematics": "^21.3.1",
     "@angular/common": "^21.1.0",
     "@angular/compiler": "^21.1.0",
     "@angular/core": "^21.1.0",
-    "@angular/forms": "^21.1.0",
+    "@angular/forms": "^21.2.8",
     "@angular/platform-browser": "^21.1.0",
     "@angular/router": "^21.1.0",
+    "@jsverse/transloco": "^8.3.0",
+    "@ngneat/transloco": "^6.0.4",
+    "@ngx-translate/core": "^17.0.0",
+    "@ngx-translate/http-loader": "^17.0.0",
+    "json-server": "^1.0.0-beta.15",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -46,15 +53,18 @@
     "@angular/build": "^21.1.2",
     "@angular/cli": "^21.1.2",
     "@angular/compiler-cli": "^21.1.0",
+    "@eslint/js": "^10.0.1",
     "@tailwindcss/postcss": "^4.1.12",
+    "angular-eslint": "21.3.1",
     "autoprefixer": "^10.4.27",
+    "eslint": "^10.0.3",
     "husky": "^9.1.7",
     "jsdom": "^27.1.0",
-    "json-server": "^1.0.0-beta.15",
     "lint-staged": "^16.4.0",
     "postcss": "^8.5.9",
     "tailwindcss": "^4.2.2",
     "typescript": "~5.9.2",
+    "typescript-eslint": "8.56.1",
     "vitest": "^4.0.8"
   }
 }

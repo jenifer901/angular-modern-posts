@@ -1,34 +1,52 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
-import { User, UserRoles } from '../models/user.model';
-import { ApiService } from '../services/api.service';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { LoginResponse } from './auth.types';
 import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private userSignal = signal<User>({} as User);
+  // ajusta al backend mock que montes con json-server
+  private readonly baseUrl = 'http://localhost:3000';
 
-  user = computed(() => this.userSignal());
+  private router = inject(Router);
+  private http = inject(HttpClient);
+
+  login(name: string, password: string): Observable<LoginResponse> {
+    // json-server no hace auth real: lo simulamos consultando users
+    return new Observable((observer) => {
+      this.http
+        .get<{ id: number; name: string; password: string }[]>(`${this.baseUrl}/users`)
+        .subscribe({
+          next: (users) => {
+            const u = users.find((x) => x.name === name && x.password === password);
+            if (!u) {
+              observer.error({ status: 401 });
+              return;
+            }
+
+            const token = 'STATIC_MOCK_TOKEN';
+            // persistimos token (luego interceptor)
+            localStorage.setItem('token', token);
+            localStorage.setItem('userId', String(u.id));
+            localStorage.setItem('userName', u.name);
+
+            observer.next({ token, userId: u.id, name: u.name });
+            observer.complete();
+          },
+          error: (e) => observer.error(e),
+        });
+    });
+  }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('auth');
-  }
-
-  private api = inject(ApiService);
-  private router = inject(Router);
-
-  saveSession(data: any) {
-    localStorage.setItem('auth', JSON.stringify(data));
-  }
-
-  login(email: string, password: string) {
-    return this.api.post('user/login', { email, password });
+    return !!localStorage.getItem('token');
   }
 
   logout() {
-    localStorage.removeItem('auth');
-    this.router.navigate(['login']);
-    this.userSignal.set({} as User);
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    this.router.navigate(['/login']);
   }
 }
