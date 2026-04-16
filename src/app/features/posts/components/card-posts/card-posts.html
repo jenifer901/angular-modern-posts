@@ -19,13 +19,11 @@
       <!-- Author -->
       <div class="flex items-center gap-2 text-sm text-gray-500">
         <div
-          class="w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs"
+          class="w-6 h-6 rounded-full bg-white text-white flex items-center justify-center text-xs"
         >
-          <!--TODO: depende de si es el usuario en el login poner un color o otro-->
-          {{ post.userId }}
+          <img [src]="post.user?.avatar" class="w-10 h-10 rounded-full" alt="avatar" />
         </div>
-        <!--Es necesario concatenar el usuario para meter el nombre y avatar-->
-        Usuario {{ post.userId }}
+        {{ post.user?.name }}
       </div>
       <!-- Tags -->
       <div class="flex gap-2">

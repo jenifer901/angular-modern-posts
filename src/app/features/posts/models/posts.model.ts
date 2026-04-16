@@ -1,7 +1,7 @@
 import { User } from '../../../core/models/user.model';
 
 export interface Post {
-  id: string;
+  id: string | null;
   userId: number;
   title: string;
   body: string;
@@ -11,14 +11,14 @@ export interface Post {
   comment?: Comment;
 }
 
-export interface PostsResponse {
+export interface PostsPagination {
   data: Post[];
   first: number;
   items: number;
   last: number;
-  next: number;
+  next: number | null;
   pages: number;
-  prev: number;
+  prev: number | null;
 }
 
 export type PageItem = { type: 'page'; value: number } | { type: 'ellipsis' };

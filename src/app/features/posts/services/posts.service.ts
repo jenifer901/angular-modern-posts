@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Post, PostsResponse } from '../models/posts.model';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Post } from '../models/posts.model';
 import { CreatePost } from '../models/create-post.model';
 
 @Injectable({
@@ -17,8 +17,8 @@ export class PostsService {
     return this.http.get<Post>(`${this.baseUrl}/posts/${id}`);
   }
 
-  loadPosts(params: HttpParams): Observable<PostsResponse> {
-    return this.http.get<PostsResponse>(`${this.baseUrl}/posts`, { params });
+  loadPosts(params: HttpParams): Observable<HttpResponse<Post[]>> {
+    return this.http.get<Post[]>(`${this.baseUrl}/posts`, { params, observe: 'response' });
   }
 
   createPosts(post: CreatePost): Observable<Post> {
@@ -30,6 +30,6 @@ export class PostsService {
   }
 
   deletePost(id: string) {
-    return this.http.delete(`${this.baseUrl}/posts/${id}`);
+    return this.http.delete(`${this.baseUrl}/posts/${id}?_dependent=comments`);
   }
 }

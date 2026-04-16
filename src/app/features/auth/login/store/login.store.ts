@@ -27,6 +27,8 @@ export class AuthStore {
     return !!localStorage.getItem('token');
   });
 
+  userId = computed(() => this.authService.getUserId());
+
   constructor() {
     effect(() => {
       const credentials = this._loginPayload();

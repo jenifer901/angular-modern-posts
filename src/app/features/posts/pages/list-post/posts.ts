@@ -1,10 +1,11 @@
-import { Component, inject, computed } from '@angular/core';
-import { PostsStore } from '../../store/posts.store';
+import { Component, inject, computed, DestroyRef } from '@angular/core';
+
 import { CardPosts } from '../../components/card-posts/card-posts';
 import { CommonModule } from '@angular/common';
 import { PaginationPost } from '../../components/pagination-posts/pagination-posts';
 import { FiltersPosts, PostFiltersForm } from '../../components/filters-posts/filters-posts';
 import { Router } from '@angular/router';
+import { PostsStore } from '../../store/posts.store';
 
 @Component({
   selector: 'app-posts',
@@ -22,6 +23,8 @@ export class Posts {
   loading = this.storePosts.loading;
 
   // 🔹 derivados
+  authorFilter = this.storePosts.authors;
+  tagFilter = this.storePosts.tags;
   currentPage = this.storePosts.currentPage;
   totalPages = this.storePosts.pages;
   hasNext = this.storePosts.hasNext;
@@ -31,6 +34,15 @@ export class Posts {
   nextPage = () => this.storePosts.nextPage();
   prevPage = () => this.storePosts.prevPage();
   totalItems = this.storePosts.items;
+
+  destroyRef = inject(DestroyRef);
+
+  constructor() {
+    // siempre que navega limpia los filtros
+    this.destroyRef.onDestroy(() => {
+      this.storePosts.resetFilters();
+    });
+  }
 
   resultsText = computed(() => {
     return `Mostrando ${this.posts().length} de ${this.totalItems()} resultados`;

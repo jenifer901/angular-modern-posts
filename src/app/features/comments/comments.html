@@ -1,0 +1,45 @@
+<div class="mt-8">
+  @if (store.commentsResource.isLoading()) {
+    <p class="text-gray-400">Loading comments...</p>
+  }
+
+  @for (comment of store.commentsResource.value() ?? []; track comment.id) {
+    <div
+      class="p-5 mb-5 rounded-xl shadow-sm hover:shadow-md transition border border-gray-100 bg-gray-50"
+    >
+      <div class="flex items-center gap-3 mb-5">
+        <span class="text-sm text-gray-500">
+          {{ comment.user?.name }}
+        </span>
+      </div>
+
+      <p class="text-gray-700 text-sm">
+        {{ comment.body }}
+      </p>
+
+      <!-- propietario check -->
+      @if (comment.userId === userId) {
+        <div class="flex justify-end">
+            <button type="button" class="text-red-500 text-xs mt-2">Eliminar</button>
+        </div>
+        
+      }
+    </div>
+  }
+
+  <div class="bg-gray-100 rounded p-5 mb-5 rounded-xl border border-gray-200">
+
+    Añadir Comentario
+     <textarea
+    #commentInput
+    class="w-full border rounded p-2 mt-4"
+    placeholder="Escribe tu comentario..."
+    [value]="store.commentInput()"
+    (input)="store.commentInput.set($any($event.target).value)"
+  ></textarea>
+  <div class="flex justify-end">
+  <button (click)=" store.createComment(store.commentInput(), userId)"
+  class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Publicar comentario</button>
+  </div>
+ </div>
+</div>

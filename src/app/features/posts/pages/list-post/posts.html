@@ -6,7 +6,11 @@
 
     <div>
       <!--Filters-->
-      <app-filters-posts (filtersChange)="setFilter($event)" />
+      <app-filters-posts
+        [authors]="authorFilter()"
+        [tags]="tagFilter()"
+        (filtersChange)="setFilter($event)"
+      />
 
       <!--Result view-->
       <div class="flex justify-end items-center mb-2 text-sm text-gray-600">

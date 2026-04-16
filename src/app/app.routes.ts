@@ -24,6 +24,12 @@ export const routes: Routes = [
             (m) => m.CreatePostPageComponent,
           ),
       },
+      {
+        path: 'posts/:id',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./features/posts/pages/detail-post/detail-post').then((m) => m.DetailPost),
+      },
     ],
   },
   {

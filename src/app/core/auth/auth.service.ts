@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  // ajusta al backend mock que montes con json-server
+  // ajusta al backend mock que monte con json-server
   private readonly baseUrl = 'http://localhost:3000';
 
   private router = inject(Router);
@@ -37,6 +37,14 @@ export class AuthService {
           error: (e) => observer.error(e),
         });
     });
+  }
+
+  getUserId(): string | null {
+    return localStorage.getItem('userId');
+  }
+
+  getUserName(): string | null {
+    return localStorage.getItem('userName');
   }
 
   isAuthenticated(): boolean {

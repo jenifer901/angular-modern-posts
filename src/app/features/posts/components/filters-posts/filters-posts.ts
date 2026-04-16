@@ -1,7 +1,7 @@
 import { Component, output, signal, input } from '@angular/core';
 import { form } from '@angular/forms/signals';
 import { FormsModule } from '@angular/forms';
-import { User } from '../../../../core/models/user.model';
+import { SelectAuthor } from '../../models/select-author.model';
 
 export interface PostFiltersForm {
   userId: string | null;
@@ -16,38 +16,9 @@ export interface PostFiltersForm {
   standalone: true,
 })
 export class FiltersPosts {
-  /**TODO: carga de datos en los filtros */
-  authors = input<User[]>([
-    {
-      id: '1',
-      name: 'alice',
-      password: 'alice123',
-      email: 'alice@example.com',
-      avatar: 'https://api.dicebear.com/9.x/thumbs/svg?seed=alice',
-    },
-    {
-      id: '2',
-      name: 'bruno',
-      password: 'bruno123',
-      email: 'bruno@example.com',
-      avatar: 'https://api.dicebear.com/9.x/thumbs/svg?seed=bruno',
-    },
-    {
-      id: '3',
-      name: 'carla',
-      password: 'carla123',
-      email: 'carla@example.com',
-      avatar: 'https://api.dicebear.com/9.x/thumbs/svg?seed=carla',
-    },
-    {
-      id: '4',
-      name: 'diego',
-      password: 'diego123',
-      email: 'diego@example.com',
-      avatar: 'https://api.dicebear.com/9.x/thumbs/svg?seed=diego',
-    },
-  ]);
-  tags = input<string[]>(['angular', 'signal']);
+  //carga de datos en los filtros
+  authors = input.required<SelectAuthor[]>();
+  tags = input.required<string[]>();
 
   filtersChange = output<PostFiltersForm>();
 
@@ -68,7 +39,7 @@ export class FiltersPosts {
     this.filtersChange.emit(this.filtersModel());
   }
 
-  /* clearFilters() {
-    this.filtersForm.reset()
-  }*/
+  clearFilters() {
+    this.filtersForm().reset();
+  }
 }
