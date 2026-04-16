@@ -5,7 +5,6 @@ import { PageItem } from '../../models/posts.model';
   selector: 'app-pagination-posts',
   templateUrl: './pagination-posts.html',
   standalone: true,
-  styleUrl: './pagination-posts.css',
 })
 export class PaginationPost {
   // 📥 inputs

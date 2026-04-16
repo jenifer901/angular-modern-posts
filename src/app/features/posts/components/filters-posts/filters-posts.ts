@@ -12,7 +12,6 @@ export interface PostFiltersForm {
   selector: 'app-filters-posts',
   imports: [FormsModule],
   templateUrl: './filters-posts.html',
-  styleUrl: './filters-posts.css',
   standalone: true,
 })
 export class FiltersPosts {

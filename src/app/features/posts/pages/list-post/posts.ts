@@ -11,7 +11,6 @@ import { PostsStore } from '../../store/posts.store';
   selector: 'app-posts',
   imports: [CardPosts, FiltersPosts, CommonModule, PaginationPost],
   templateUrl: './posts.html',
-  styleUrl: './posts.css',
   standalone: true,
 })
 export class Posts {

@@ -1,0 +1,22 @@
+<div class="bg-gray-100 rounded p-5 mb-5 rounded-xl border border-gray-200">
+  Añadir Comentario
+  <textarea
+    class="mt-2 w-full border rounded p-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    [formField]="commentForm.body"
+    placeholder="Escribe tu comentario..."
+    [class.border-red-500]="commentForm.body().invalid() && commentForm.body().touched()"
+  ></textarea>
+
+  @if (commentForm.body().touched() && commentForm.body().invalid()) {
+    <p class="text-red-500 text-xs mt-1">El comentario es obligatorio</p>
+  }
+  <div class="flex justify-end">
+    <button
+      class="mt-2 bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+      [disabled]="commentForm.body().invalid()"
+      (click)="createComment()"
+    >
+      Publicar comentario
+    </button>
+  </div>
+</div>

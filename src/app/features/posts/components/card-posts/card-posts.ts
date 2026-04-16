@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
   selector: 'app-card-posts',
   imports: [DatePipe, RouterModule],
   templateUrl: './card-posts.html',
-  styleUrl: './card-posts.css',
   standalone: true,
 })
 export class CardPosts {

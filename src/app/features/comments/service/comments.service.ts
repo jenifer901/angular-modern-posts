@@ -18,4 +18,8 @@ export class CommentsService {
   deleteComment(id: number) {
     return this.http.delete(`${this.baseUrl}/comments/${id}`);
   }
+
+  updateComment(id: number, body: string) {
+    return this.http.patch<Comment>(`${this.baseUrl}/comments/${id}`, { body });
+  }
 }
