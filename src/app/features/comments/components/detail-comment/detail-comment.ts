@@ -1,7 +1,6 @@
 import { Component, input, inject } from '@angular/core';
 import { Comment } from '../../models/comment.model';
 import { TimeagoModule } from 'ngx-timeago';
-import { AuthService } from '../../../../core/auth/auth.service';
 import { ModalService } from '../../../../shared/service/confirm-modal-data';
 import { CommentsStore } from '../../store/comments.store';
 
@@ -12,11 +11,11 @@ import { CommentsStore } from '../../store/comments.store';
 })
 export class DetailComment {
   private modal = inject(ModalService);
-  private authService = inject(AuthService);
   store = inject(CommentsStore);
 
   comment = input.required<Comment>();
-  userId = Number(this.authService.getUserId());
+
+  userId = input.required<number>();
 
   openDeleteModal() {
     this.modal.open({
@@ -48,7 +47,6 @@ export class DetailComment {
   }
 
   confirmEdit() {
-    console.log('dentro del editar');
     this.store.startEdit(this.comment());
   }
 

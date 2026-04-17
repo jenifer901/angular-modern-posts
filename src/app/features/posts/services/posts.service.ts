@@ -25,8 +25,8 @@ export class PostsService {
     return this.http.post<Post>(`${this.baseUrl}/posts`, post);
   }
 
-  updatePost(id: string, post: Post) {
-    return this.http.patch(`${this.baseUrl}/posts${id}`, post);
+  updatePost(id: string, post: Post): Observable<Post>  {
+    return this.http.patch<Post>(`${this.baseUrl}/posts/${id}`, post);
   }
 
   deletePost(id: string) {

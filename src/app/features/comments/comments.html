@@ -6,7 +6,7 @@
 
   <!--Lista-->
   @for (comment of store.commentsResource.value() ?? []; track comment.id) {
-    <app-detail-comment [comment]="comment" />
+    <app-detail-comment [userId]="userId()" [comment]="comment" />
   }
 
   <!--Error-->

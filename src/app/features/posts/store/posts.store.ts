@@ -27,13 +27,14 @@ export class PostsStore {
   private _filters = signal<{
     userId?: string | null;
     tag?: string | null;
-    search?: string | null;
   }>({});
+
   private _selectedPost = signal<Post | null>(null);
   selectedPost = this._selectedPost.asReadonly();
 
   private _deleteSuccess = signal<boolean>(false);
   deleteSuccess = this._deleteSuccess.asReadonly();
+  searchInput = signal<string>('');
 
   posts = computed(() => this._response()?.data ?? []);
   pages = computed(() => this._response()?.pages ?? 0);
@@ -68,8 +69,10 @@ export class PostsStore {
   constructor() {
     effect(() => {
       this._filters(); // 👈 dependencia reactiva
+      this.searchInput();
       this.loadPosts(1); // reset página al filtrar
     });
+
   }
 
   loadPost(id: string) {
@@ -83,6 +86,7 @@ export class PostsStore {
 
   loadPosts(page: number): void {
     this._loading.set(true);
+    this._selectedPost.set(null);
     const f = this._filters();
 
     let params = new HttpParams()
@@ -91,13 +95,16 @@ export class PostsStore {
       .set('_sort', '-views')
       .set('_expand', 'user');
 
-    /**TODO: optimizar la carga con los filtros, es necesario que se haga por aqui ya que me cargo la paginacion */
     if (f.userId) {
       params = params.append('userId', f.userId);
     }
 
     if (f.tag) {
       params = params.append('tags_like', f.tag);
+    }
+
+    if(this.searchInput()){
+      params = params.append('q', this.searchInput());
     }
 
     this.postService.loadPosts(params).subscribe({
@@ -163,15 +170,25 @@ export class PostsStore {
     );
   }
 
+   updatePost(post: Post): Observable<Post> {
+    this._loading.set(true);
+    return this.postService.updatePost(post.id!, post).pipe(
+      tap(() => {
+        this._loading.set(false);
+      }),
+    );
+  }
+
   resetFilters() {
     this._filters.set({
       userId: null,
-      tag: null,
-      search: null,
+      tag: null
     });
+    this.searchInput.set('');
   }
 
   setFilter(filter: PostFiltersForm) {
+    console.log(filter)
     this._filters.update(() => filter);
   }
 }

@@ -25,6 +25,10 @@ export class AddComment {
       this.commentForm().markAsTouched();
     } else {
       this.store.createComment(this.commentForm.body().value());
+      this.commentModel.set({
+        body: ''
+      });
+      this.commentForm().reset();
     }
   }
 }

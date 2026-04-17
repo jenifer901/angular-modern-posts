@@ -15,7 +15,7 @@
     </p>
 
     <!-- propietario check-->
-    @if (comment().userId === userId) {
+    @if (comment().userId === userId()) {
       <div class="flex justify-end gap-2">
         <button type="button" class="text-blue-500 text-xs mt-2" (click)="openEditModal()">
           Editar
@@ -27,7 +27,7 @@
     }
   }
   <!-- modo edición -->
-  @if (store.editingCommentId() === comment().id && comment().userId === userId) {
+  @if (store.editingCommentId() === comment().id && comment().userId === userId()) {
     Editar comentario
     <textarea
       class="mt-2 w-full border rounded p-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -4,3 +4,9 @@ export interface CreatePost {
   tags: string[];
   userId?: string | null;
 }
+
+export interface PostFormData {
+  title: string;
+  body: string;
+  tags: string;
+}

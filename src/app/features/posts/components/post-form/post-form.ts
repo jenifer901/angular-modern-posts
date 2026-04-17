@@ -1,13 +1,11 @@
-import { Component, Output, EventEmitter, signal } from '@angular/core';
-import { CreatePost } from '../../models/create-post.model';
+import { Component, Output, EventEmitter, signal, inject } from '@angular/core';
+import { CreatePost, PostFormData } from '../../models/create-post.model';
 import { form, FormField, required } from '@angular/forms/signals';
 import { CommonModule } from '@angular/common';
+import { PostsStore } from '../../store/posts.store';
+import { Post } from '../../models/posts.model';
 
-interface PostFormData {
-  title: string;
-  body: string;
-  tags: string;
-}
+
 
 @Component({
   selector: 'app-post-form',
@@ -16,15 +14,16 @@ interface PostFormData {
   templateUrl: './post-form.html',
 })
 export class PostFormComponent {
-  @Output() submitPost = new EventEmitter<CreatePost>();
-  @Output() cancelPost = new EventEmitter<void>();
+  storePosts = inject(PostsStore);
 
-  /***TODO: es necesario meter los validadores en este apartado de los campos y los mensajes */
+  @Output() submitPost = new EventEmitter<CreatePost>();
+  @Output() submitPostUpdate = new EventEmitter<Post>();
+  @Output() cancelPost = new EventEmitter<void>();
 
   postModel = signal<PostFormData>({
     title: '',
     body: '',
-    tags: '',
+    tags: ''
   });
 
   postForm = form(this.postModel, (schemaPath) => {
@@ -41,6 +40,20 @@ export class PostFormComponent {
     });
   });
 
+  constructor(){
+   const post = this.storePosts.selectedPost();
+
+if (post) {
+  const { title, body, tags } = post;
+
+  this.postModel.set({
+    title,
+    body,
+    tags: tags.join(', ')
+  });
+}
+}
+
   submit() {
     if (!this.postForm().valid()) {
       this.postForm.title().markAsTouched();
@@ -49,6 +62,7 @@ export class PostFormComponent {
 
       return;
     } else {
+       const post = this.storePosts.selectedPost();
       const tagsArray = this.postForm
         .tags()
         .value()
@@ -56,11 +70,21 @@ export class PostFormComponent {
         .map((t) => t.trim())
         .filter((t) => t.length > 0);
 
-      this.submitPost.emit({
+
+if (post) {
+  this.submitPostUpdate.emit({
+        ...post,
         title: this.postForm.title().value(),
         body: this.postForm.body().value(),
-        tags: tagsArray,
+        tags: tagsArray
+      });
+} else {
+  this.submitPost.emit({
+        title: this.postForm.title().value(),
+        body: this.postForm.body().value(),
+        tags: tagsArray
       });
     }
+  }
   }
 }

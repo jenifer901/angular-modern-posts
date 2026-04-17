@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PostsStore } from '../../store/posts.store';
 import { CommentsListComponent } from '../../../comments/comments';
 import { ModalService } from '../../../../shared/service/confirm-modal-data';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-detail-post',
@@ -13,8 +14,10 @@ import { ModalService } from '../../../../shared/service/confirm-modal-data';
 export class DetailPost {
   private route = inject(ActivatedRoute);
   private modal = inject(ModalService);
+  authService = inject(AuthService);
   store = inject(PostsStore);
   router = inject(Router);
+  userId = Number(this.authService.getUserId());
 
   showDeleteModal = signal(false);
 
@@ -34,7 +37,7 @@ export class DetailPost {
         this.store.resetDeleteState();
       }
     });
-  }
+   }
 
   openDeleteModal() {
     this.modal.open({
@@ -46,6 +49,23 @@ export class DetailPost {
         this.confirmDelete();
       },
     });
+  }
+
+  openEditModal(){
+    this.modal.open({
+      title: 'Editar post',
+      message: '¿Seguro que quieres editar este post?',
+      confirmText: 'Editar',
+      cancelText: 'Cancelar',
+      confirmButtonClass: 'hover:bg-blue-700 bg-blue-300',
+      onConfirm: () => {
+        this.confirmEdit();
+      },
+    });
+  }
+
+  confirmEdit() {
+    this.router.navigate(['/posts', this.store.selectedPost()?.id, 'edit']);
   }
 
   confirmDelete() {

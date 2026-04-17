@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, input } from '@angular/core';
 import { CommentsStore } from './store/comments.store';
 import { AddComment } from './components/add-comment/add-comment';
 import { DetailComment } from './components/detail-comment/detail-comment';
@@ -17,4 +17,6 @@ export class CommentsListComponent {
   set postId(id: string | null | undefined) {
     if (id) this.store.setPostId(id);
   }
+
+  userId = input.required<number>();
 }

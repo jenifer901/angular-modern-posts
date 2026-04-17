@@ -5,19 +5,21 @@
       <h1 class="text-3xl font-bold">
         {{ post.title }}
       </h1>
+      @if (+post.userId === userId) {
+        <div class="flex gap-2">
+          <button class="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700"
+          (click)="openEditModal()">
+            Editar
+          </button>
 
-      <div class="flex gap-2">
-        <button class="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700">
-          Editar
-        </button>
-
-        <button
-          (click)="openDeleteModal()"
-          class="bg-red-100 text-red-600 px-3 py-1.5 rounded-md text-sm hover:bg-red-200"
-        >
-          Eliminar
-        </button>
-      </div>
+          <button
+            (click)="openDeleteModal()"
+            class="bg-red-100 text-red-600 px-3 py-1.5 rounded-md text-sm hover:bg-red-200"
+          >
+            Eliminar
+          </button>
+        </div>
+      }
     </div>
 
     <!-- body -->
@@ -30,7 +32,7 @@
       <h3 class="text-sm font-semibold text-gray-500 mb-4">COMENTARIOS</h3>
 
       @defer (on viewport) {
-        <app-comments-list [postId]="store.selectedPost()?.id" />
+        <app-comments-list [userId]="userId" [postId]="store.selectedPost()?.id" />
       } @placeholder {
         <p class="text-gray-400">Cargando comentarios...</p>
       }
