@@ -1,10 +1,10 @@
 import { Component, inject, effect, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CommentsListComponent } from '../../../comments/comments';
 import { ModalService } from '../../../../shared/service/confirm-modal-data.service';
 import { AuthService } from '../../../../core/auth/auth.service';
 import { I18N_IMPORTS } from '../../../../shared/shared-imports';
 import { PostSelectStore } from '../../store/select-post.store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detail-post',
@@ -13,7 +13,6 @@ import { PostSelectStore } from '../../store/select-post.store';
   standalone: true,
 })
 export class DetailPost {
-  private route = inject(ActivatedRoute);
   private modal = inject(ModalService);
   authService = inject(AuthService);
   store = inject(PostSelectStore);
@@ -29,14 +28,7 @@ export class DetailPost {
   showDeleteModal = signal(false);
 
   constructor() {
-    effect(() => {
-      const id = this.route.snapshot.paramMap.get('id');
-
-      if (id) {
-        this.store.setPostId(id);
-      }
-    });
-
+    console.log(this.isOwner())
     effect(() => {
       if (this.store.deleteSuccess()) {
         this.router.navigate(['/posts']);
