@@ -6,7 +6,7 @@
     "LANGUAGE_EN": "EN"
   },
   "LOGIN": {
-    "WElCOME": "Bienvenido",
+    "WELCOME": "Bienvenido",
     "CREDENTIAL": "Introduce credenciales",
     "USER": "USUARIO",
     "PASSWORD": "CONTRASEÑA",

@@ -2,15 +2,15 @@
 import { describe, it, expect, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { authGuard } from './auth.guard';
-import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
+import { AuthStore } from '../../features/auth/login/store/login.store';
 
 describe('authGuard', () => {
   it('should allow access if authenticated', () => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: AuthService,
+          provide: AuthStore,
           useValue: {
             isAuthenticated: () => true,
           },
@@ -37,7 +37,7 @@ describe('authGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         {
-          provide: AuthService,
+          provide: AuthStore,
           useValue: {
             isAuthenticated: () => false,
           },
