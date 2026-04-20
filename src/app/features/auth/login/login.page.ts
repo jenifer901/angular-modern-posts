@@ -2,10 +2,11 @@ import { Component, inject, signal } from '@angular/core';
 import { form, FormField, required } from '@angular/forms/signals';
 import { AuthStore } from './store/login.store';
 import { Router } from '@angular/router';
+import { I18N_IMPORTS } from '../../../shared/shared-imports';
 
 @Component({
   standalone: true,
-  imports: [FormField],
+  imports: [FormField, I18N_IMPORTS],
   templateUrl: './login.page.html',
 })
 export class LoginPage {

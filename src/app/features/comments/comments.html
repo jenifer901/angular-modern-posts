@@ -1,24 +1,24 @@
 <div class="mt-8">
   <!--Cargando comentarios-->
-  @if (store.commentsResource.isLoading()) {
-    <p class="text-gray-400">CArgando comentarios...</p>
+  @if (loading()) {
+    <p class="text-gray-400">{{ 'STATE.LOADING_COMMENTS' | translate }}</p>
   }
 
   <!--Lista-->
-  @for (comment of store.commentsResource.value() ?? []; track comment.id) {
+  @for (comment of comments() ?? []; track comment.id) {
     <app-detail-comment [userId]="userId()" [comment]="comment" />
   }
 
   <!--Error-->
-  @if (store.commentsResource.error()) {
-    <p class="text-red-500 text-sm">Error cargando comentarios</p>
+  @if (error()) {
+    <p class="text-red-500 text-sm">{{ 'STATE.ERROR_COMMENTS' | translate }}</p>
   }
 
   <!--Post sin comentarios-->
-  @if ((store.commentsResource.value()?.length ?? 0) === 0) {
-    <p>No hay comentarios</p>
+  @if (isEmpty()) {
+    <p>{{ 'COMMENTS.EMPTY' | translate }}</p>
   }
 
   <!--Nuevo comentario-->
-  <app-add-comment></app-add-comment>
+  <app-add-comment />
 </div>

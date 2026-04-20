@@ -1,0 +1,77 @@
+{
+  "HEADER": {
+    "SEARCH": "Search posts...",
+    "EXIT": "⎋ Exit",
+    "LANGUAGE_ES": "ES",
+    "LANGUAGE_EN": "EN"
+  },
+  "LOGIN": {
+    "WElCOME": "Welcome",
+    "CREDENTIAL": "Enter credentials",
+    "USER": "USERNAME",
+    "PASSWORD": "PASSWORD",
+    "CREDENTIAL_ERROR": "Invalid credentials",
+    "ACCESS": "Access →",
+    "USER_INPUT": "UserName",
+    "PASSWORD_INPUT": "••••••••"
+  },
+  "STATE": {
+    "LOADING_DETAIL_POST": "Loading post details...",
+    "ERROR": "Error...",
+    "LOADING_COMMENTS": "Loading comments...",
+    "ERROR_COMMENTS": "Error loading comments",
+    "LODING": "Loading...",
+    "ACCESSING": "Accessing..."
+  },
+  "FILTER": {
+    "AUTHORS": "Authors",
+    "TAGS": "Tags"
+  },
+  "COMMENTS": {
+    "TITLE": "Comments",
+    "ADD": "Add comment",
+    "EDIT": "Edit comment",
+    "DELETE": "Delete comment",
+    "PLACEHOLDER": "Write a comment...",
+    "PUBLIC": "Publish comment",
+    "REQUIRED": "Comment is required",
+    "EMPTY": "No comments available",
+    "ADD_INPUT": "Write to comment..."
+  },
+  "BUTTON": {
+    "DELETE": "Delete",
+    "EDIT": "Edit",
+    "CANCEL": "Cancel",
+    "SAVE": "Save",
+    "ACEPT": "Accept",
+    "PUBLIC": "Publish",
+    "ADD": "+ Add",
+    "PREVIOUS": "Previous",
+    "NEXT": "Next"
+  },
+  "MODAL": {
+    "CONFIRM_DELETE_BODY": "Are you sure you want to delete?",
+    "CONFIRM_EDIT_BODY": "Are you sure you want to edit?",
+    "POST_EDIT": "Edit post",
+    "POST_DELETE": "Delete post"
+  },
+  "FORM_POST": {
+    "TITLE_POST": "Post title...",
+    "BODY_POST": "Post content...",
+    "TAGS_POST": "angular, frontend, signals",
+    "REQUIRED_TITLE": "Title is required",
+    "REQUIRED_BODY": "Content is required",
+    "REQUIRED_TAGS": "Tags are required",
+    "NEW_POST": "New post",
+    "EDIT_POST": "Create post",
+    "TITLE": "TITLE",
+    "BODY": "CONTENT",
+    "TAGS": "TAGS",
+    "NEW": "Write your post",
+    "EDIT": "Edit post",
+    "LIST": "Post list"
+  },
+  "RESULTS": {
+  "SHOWING": "Showing {{shown}} of {{total}} results"
+}
+}

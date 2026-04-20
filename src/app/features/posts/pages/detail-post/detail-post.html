@@ -1,22 +1,32 @@
-@if (store.selectedPost(); as post) {
+@if (loading()) {
+  <div class="text-center py-10 text-gray-500">{{ 'STATE.LOADING_DETAIL_POST' | translate }}</div>
+}
+
+@if (error()) {
+  <div class="text-center py-10 text-gray-500">{{ 'STATE.ERROR' | translate }}</div>
+}
+
+@if (post(); as post) {
   <div class="max-w-3xl mx-auto py-10">
     <!-- header -->
     <div class="flex justify-between items-start mb-6">
       <h1 class="text-3xl font-bold">
         {{ post.title }}
       </h1>
-      @if (+post.userId === userId) {
+      @if (isOwner()) {
         <div class="flex gap-2">
-          <button class="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700"
-          (click)="openEditModal()">
-            Editar
+          <button
+            class="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700"
+            (click)="openEditModal()"
+          >
+            {{ 'BUTTON.EDIT' | translate }}
           </button>
 
           <button
             (click)="openDeleteModal()"
             class="bg-red-100 text-red-600 px-3 py-1.5 rounded-md text-sm hover:bg-red-200"
           >
-            Eliminar
+            {{ 'BUTTON.DELETE' | translate }}
           </button>
         </div>
       }
@@ -29,12 +39,12 @@
 
     <!-- comentarios -->
     <div class="mt-10">
-      <h3 class="text-sm font-semibold text-gray-500 mb-4">COMENTARIOS</h3>
+      <h3 class="text-sm font-semibold text-gray-500 mb-4">{{ 'COMMENTS.TITLE' | translate }}</h3>
 
       @defer (on viewport) {
-        <app-comments-list [userId]="userId" [postId]="store.selectedPost()?.id" />
+        <app-comments-list [userId]="userId" [postId]="post.id" />
       } @placeholder {
-        <p class="text-gray-400">Cargando comentarios...</p>
+        <p class="text-gray-400">{{ 'STATE.LOADING_COMMENTS' | translate }}.</p>
       }
     </div>
   </div>

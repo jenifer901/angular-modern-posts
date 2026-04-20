@@ -1,17 +1,17 @@
-<a [routerLink]="['/posts', post.id]">
+<a [routerLink]="['/posts', post().id]">
   <div class="space-y-4">
     <div class="flex justify-between items-start">
       <h2 class="text-lg font-semibold text-gray-800">
-        {{ post.title }}
+        {{ post().title }}
       </h2>
 
       <span class="text-xs text-gray-400">
-        {{ post.createdAt | date: 'MMM yyyy' }}
+        {{ post().createdAt | date: 'MMM yyyy' }}
       </span>
     </div>
 
     <p class="text-gray-600 text-sm mt-2 line-clamp-2">
-      {{ post.body }}
+      {{ post().body }}
     </p>
 
     <!-- Footer -->
@@ -21,13 +21,13 @@
         <div
           class="w-6 h-6 rounded-full bg-white text-white flex items-center justify-center text-xs"
         >
-          <img [src]="post.user?.avatar" class="w-10 h-10 rounded-full" alt="avatar" />
+          <img [src]="post().user?.avatar" class="w-10 h-10 rounded-full" alt="avatar" />
         </div>
-        {{ post.user?.name }}
+        {{ post().user?.name }}
       </div>
       <!-- Tags -->
       <div class="flex gap-2">
-        @for (tag of post.tags; track tag) {
+        @for (tag of post().tags; track tag) {
           <span class="text-xs px-2 py-1 bg-gray-200 rounded-full text-gray-600">
             {{ tag }}
           </span>

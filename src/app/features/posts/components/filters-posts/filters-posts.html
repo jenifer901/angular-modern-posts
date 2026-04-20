@@ -5,7 +5,7 @@
     [value]="filtersModel().userId"
     (change)="updateSelect($event, 'userId')"
   >
-    <option value="">Autores</option>
+    <option value="">{{ 'FILTER.AUTHORS' | translate }}</option>
 
     @for (author of authors(); track author.id) {
       <option [value]="author.id">
@@ -20,7 +20,7 @@
     [value]="filtersModel().tag"
     (change)="updateSelect($event, 'tag')"
   >
-    <option [value]="null">Tags</option>
+    <option [value]="null">{{ 'FILTER.TAGS' | translate }}</option>
 
     @for (tag of tags(); track tag) {
       <option [value]="tag">

@@ -7,14 +7,14 @@ import { PageItem } from '../../models/posts.model';
   standalone: true,
 })
 export class PaginationPost {
-  // 📥 inputs
+  // inputs
   totalPages = input.required<number>();
   currentPage = input.required<number>();
 
-  // 📤 output
+  // output
   pageChange = output<number>();
 
-  // 🧠 pagination logic
+  // pagination logic
   items = computed<PageItem[]>(() => {
     const total = this.totalPages();
     const current = this.currentPage();
@@ -45,7 +45,6 @@ export class PaginationPost {
     return items;
   });
 
-  // 🎯 helpers
   selectPage(page: number) {
     this.pageChange.emit(page);
   }

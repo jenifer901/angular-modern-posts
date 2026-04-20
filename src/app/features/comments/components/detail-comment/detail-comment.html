@@ -18,17 +18,17 @@
     @if (comment().userId === userId()) {
       <div class="flex justify-end gap-2">
         <button type="button" class="text-blue-500 text-xs mt-2" (click)="openEditModal()">
-          Editar
+          {{ 'BUTTON.EDIT' | translate }}
         </button>
         <button type="button" class="text-red-500 text-xs mt-2" (click)="openDeleteModal()">
-          Eliminar
+          {{ 'BUTTON.DELETE' | translate }}
         </button>
       </div>
     }
   }
   <!-- modo edición -->
   @if (store.editingCommentId() === comment().id && comment().userId === userId()) {
-    Editar comentario
+    {{ 'COMMENTS.EDIT' | translate }}
     <textarea
       class="mt-2 w-full border rounded p-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
       [value]="store.editText()"
@@ -40,14 +40,14 @@
         class="bg-blue-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-blue-700"
         (click)="saveEdit(comment().id)"
       >
-        Guardar
+        {{ 'BUTTON.SAVE' | translate }}
       </button>
 
       <button
         class="bg-gray-100 text-white-600 px-3 py-1.5 rounded-md text-sm hover:bg-gray-200"
         (click)="store.cancelEdit()"
       >
-        Cancelar
+        {{ 'BUTTON.CANCEL' | translate }}
       </button>
     </div>
   }

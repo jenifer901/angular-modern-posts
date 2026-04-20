@@ -1,0 +1,77 @@
+{
+  "HEADER": {
+    "SEARCH": "Buscar posts...",
+    "EXIT": "⎋ Salir",
+    "LANGUAGE_ES": "ES",
+    "LANGUAGE_EN": "EN"
+  },
+  "LOGIN": {
+    "WElCOME": "Bienvenido",
+    "CREDENTIAL": "Introduce credenciales",
+    "USER": "USUARIO",
+    "PASSWORD": "CONTRASEÑA",
+    "CREDENTIAL_ERROR": "Credenciales incorrectas",
+    "ACCESS": "Acceder →",
+    "USER_INPUT": "Usuario",
+    "PASSWORD_INPUT": "••••••••"
+  },
+  "STATE":{
+    "LOADING_DETAIL_POST": "Cargando detalles del post...",
+    "ERROR": "Error...",
+    "LOADING_COMMENTS": "Cargando comentarios....",
+    "ERROR_COMMENTS": "Error cargar comentarios",
+    "LOADING": "Cargando...",
+    "ACCESSING": "Accediendo...."
+  },
+  "FILTER": {
+    "AUTHORS": "Autores",
+    "TAGS": "Tags" 
+  },
+  "COMMENTS": {
+    "TITLE": "Comentarios",
+    "ADD": "Añadir comentario",
+    "EDIT": "Editar comentario",
+    "DELETE": "Eliminar comentario",
+    "PLACEHOLDER": "Escribe un comentario...",
+    "PUBLIC": "Publicar comentario",
+    "REQUIRED": "El comentario es obligatorio",
+    "EMPTY": "No hay comentarios",
+    "ADD_INPUT": "Escribe tu comentario..."
+  },
+  "BUTTON": {
+    "DELETE": "ELiminar",
+    "EDIT": "Editar",
+    "CANCEL": "Cancelar",
+    "SAVE": "Guardar",
+    "ACCEPT": "Aceptar",
+    "PUBLIC": "Publicar",
+    "ADD": "+ Añadir",
+    "PREVIOUS": "Anterior",
+    "NEXT": "Siguiente"
+  },
+  "MODAL": {
+    "CONFIRM_DELETE_BODY": "¿Seguro que quieres eliminar?",
+    "CONFIRM_EDIT_BODY": "¿Seguro que quieres editar?",
+    "POST_EDIT": "Editar post",
+    "POST_DELETE": "Eliminar post"
+  },
+  "FORM_POST": {
+    "TITLE_POST": "Título del post...",
+    "BODY_POST": "Contenido del post...",
+    "TAGS_POST": "angular, frontend, signals",
+    "REQUIRED_TITLE": "Título requerido",
+    "REQUIRED_BODY": "Contenido requerido",
+    "REQUIRED_TAGS": "Tags requeridos",
+    "NEW_POST": "Nuevo post",
+    "EDIT_POST": "Crear post",
+    "TITLE": "TITULO",
+    "BODY": "CONTENIDO",
+    "TAGS": "TANGS",
+    "NEW": "Escribe tu post",
+    "EDIT": "Editar post",
+    "LIST": "Lista de post"
+  },
+  "RESULTS": {
+  "SHOWING": "Mostrando {{shown}} de {{total}} resultados"
+}
+}

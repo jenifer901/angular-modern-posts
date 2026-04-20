@@ -2,7 +2,7 @@ import { Component, output, signal, input } from '@angular/core';
 import { form } from '@angular/forms/signals';
 import { FormsModule } from '@angular/forms';
 import { SelectAuthor } from '../../models/select-author.model';
-
+import { I18N_IMPORTS } from '../../../../shared/shared-imports';
 export interface PostFiltersForm {
   userId: string | null;
   tag: string | null;
@@ -10,7 +10,7 @@ export interface PostFiltersForm {
 
 @Component({
   selector: 'app-filters-posts',
-  imports: [FormsModule],
+  imports: [FormsModule, I18N_IMPORTS],
   templateUrl: './filters-posts.html',
   standalone: true,
 })

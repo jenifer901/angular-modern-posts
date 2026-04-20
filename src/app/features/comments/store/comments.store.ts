@@ -1,7 +1,8 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal, inject, computed } from '@angular/core';
 import { httpResource } from '@angular/common/http';
 import { Comment } from '../models/comment.model';
 import { CommentsService } from '../service/comments.service';
+import { Enviroment } from '../../../../environments/environment';
 
 @Injectable()
 export class CommentsStore {
@@ -18,7 +19,7 @@ export class CommentsStore {
 
     return id
       ? {
-          url: 'http://localhost:3000/comments',
+          url: `${Enviroment.apiUrl}/comments`,
           params: {
             postId: id,
             _expand: 'user',
@@ -26,6 +27,11 @@ export class CommentsStore {
         }
       : undefined;
   });
+
+  comments = this.commentsResource.value;
+  loading = this.commentsResource.isLoading;
+  error = this.commentsResource.error;
+  isEmpty = computed(() => !this.loading() && !this.comments());
 
   setPostId(id: string) {
     this.postId.set(id);
@@ -44,7 +50,7 @@ export class CommentsStore {
     };
 
     this.commentsService.createComment(comment).subscribe(() => {
-      // 🔄 recarga automática
+      // recarga automática
       this.commentsResource.reload();
     });
   }
@@ -56,6 +62,7 @@ export class CommentsStore {
 
     this.commentsService.deleteComment(comment.id).subscribe(() => this.commentsResource.reload());
   }
+
   startEdit(comment: Comment) {
     this.editingCommentId.set(comment.id);
     this.editText.set(comment.body);
@@ -64,6 +71,7 @@ export class CommentsStore {
   cancelEdit() {
     this.editingCommentId.set(null);
   }
+
   updateComment(id: number, body: string) {
     this.commentsService.updateComment(id, body).subscribe(() => {
       this.commentsResource.reload();

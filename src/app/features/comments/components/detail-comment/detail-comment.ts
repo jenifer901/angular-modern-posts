@@ -1,12 +1,13 @@
 import { Component, input, inject } from '@angular/core';
 import { Comment } from '../../models/comment.model';
 import { TimeagoModule } from 'ngx-timeago';
-import { ModalService } from '../../../../shared/service/confirm-modal-data';
+import { ModalService } from '../../../../shared/service/confirm-modal-data.service';
 import { CommentsStore } from '../../store/comments.store';
+import { I18N_IMPORTS } from '../../../../shared/shared-imports';
 
 @Component({
   selector: 'app-detail-comment',
-  imports: [TimeagoModule],
+  imports: [TimeagoModule, I18N_IMPORTS],
   templateUrl: './detail-comment.html',
 })
 export class DetailComment {
@@ -19,10 +20,10 @@ export class DetailComment {
 
   openDeleteModal() {
     this.modal.open({
-      title: 'Eliminar comentario',
-      message: '¿Seguro que quieres eliminar este comentario? Esta acción no se puede deshacer.',
-      confirmText: 'Eliminar',
-      cancelText: 'Cancelar',
+      title: 'COMMENTS.DELETE',
+      message: 'MODAL.CONFIRM_DELETE_BODY',
+      confirmText: 'BUTTON.DELETE',
+      cancelText: 'BUTTON.CANCEL',
       onConfirm: () => {
         this.confirmDelete();
       },
@@ -35,11 +36,11 @@ export class DetailComment {
 
   openEditModal() {
     this.modal.open({
-      title: 'Editar comentario',
-      message: '¿Seguro que quieres editar este comentario?',
-      confirmText: 'Editar',
+      title: 'COMMENTS.EDIT',
+      message: 'MODAL.CONFIRM_EDIT_BODY',
+      confirmText: 'BUTTON.EDIT',
       confirmButtonClass: 'hover:bg-blue-700 bg-blue-300',
-      cancelText: 'Cancelar',
+      cancelText: 'BUTTON.CANCEL',
       onConfirm: () => {
         this.confirmEdit();
       },

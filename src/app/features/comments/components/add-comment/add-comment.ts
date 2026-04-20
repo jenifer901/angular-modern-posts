@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommentsStore } from '../../store/comments.store';
 import { FormField, form, required } from '@angular/forms/signals';
+import { I18N_IMPORTS } from '../../../../shared/shared-imports';
 
 @Component({
   selector: 'app-add-comment',
-  imports: [FormField],
+  imports: [FormField, I18N_IMPORTS],
   templateUrl: './add-comment.html',
 })
 export class AddComment {
@@ -26,7 +27,7 @@ export class AddComment {
     } else {
       this.store.createComment(this.commentForm.body().value());
       this.commentModel.set({
-        body: ''
+        body: '',
       });
       this.commentForm().reset();
     }

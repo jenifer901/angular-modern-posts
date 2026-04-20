@@ -4,15 +4,8 @@ import { PostsService } from '../services/posts.service';
 import { HttpParams, HttpResponse } from '@angular/common/http';
 import { CreatePost } from '../models/create-post.model';
 import { PostFiltersForm } from '../components/filters-posts/filters-posts';
-import { Observable, tap } from 'rxjs';
 import { AuthStore } from '../../auth/login/store/login.store';
 import { SelectAuthor } from '../models/select-author.model';
-
-/**
- * uso de signals
- * tipo de signal computed
- * estado reactivo
- */
 
 @Injectable({
   providedIn: 'root',
@@ -29,11 +22,6 @@ export class PostsStore {
     tag?: string | null;
   }>({});
 
-  private _selectedPost = signal<Post | null>(null);
-  selectedPost = this._selectedPost.asReadonly();
-
-  private _deleteSuccess = signal<boolean>(false);
-  deleteSuccess = this._deleteSuccess.asReadonly();
   searchInput = signal<string>('');
 
   posts = computed(() => this._response()?.data ?? []);
@@ -66,27 +54,19 @@ export class PostsStore {
     return [...new Set(allTags)];
   });
 
+  private _addSuccess = signal<boolean>(false);
+  addSuccess = this._addSuccess.asReadonly();
+
   constructor() {
     effect(() => {
-      this._filters(); // 👈 dependencia reactiva
+      this._filters(); // dependencia reactiva
       this.searchInput();
       this.loadPosts(1); // reset página al filtrar
-    });
-
-  }
-
-  loadPost(id: string) {
-    this._loading.set(true);
-
-    this.postService.getPost(id).subscribe((post) => {
-      this._selectedPost.set(post);
-      this._loading.set(false);
     });
   }
 
   loadPosts(page: number): void {
     this._loading.set(true);
-    this._selectedPost.set(null);
     const f = this._filters();
 
     let params = new HttpParams()
@@ -103,7 +83,7 @@ export class PostsStore {
       params = params.append('tags_like', f.tag);
     }
 
-    if(this.searchInput()){
+    if (this.searchInput()) {
       params = params.append('q', this.searchInput());
     }
 
@@ -132,21 +112,6 @@ export class PostsStore {
     this._loading.set(false);
   }
 
-  deletePost(id: string) {
-    this._loading.set(true);
-
-    this.postService.deletePost(id).subscribe(() => {
-      this._page.set(1);
-      this._deleteSuccess.set(true);
-      this._selectedPost.set(null);
-      this._loading.set(false);
-    });
-  }
-
-  resetDeleteState() {
-    this._deleteSuccess.set(false);
-  }
-
   nextPage() {
     const next = this._response()?.next;
     if (next) this.loadPosts(next);
@@ -161,34 +126,32 @@ export class PostsStore {
     this.loadPosts(page);
   }
 
-  addPosts(post: CreatePost): Observable<Post> {
+  addPosts(post: CreatePost): void {
     this._loading.set(true);
-    return this.postService.createPosts({ ...post, userId: this.authService.userId() }).pipe(
-      tap(() => {
+    this.postService.createPosts({ ...post, userId: this.authService.userId() }).subscribe({
+      next: () => {
+        this._addSuccess.set(true);
         this._loading.set(false);
-      }),
-    );
+      },
+      error: () => {
+        this._loading.set(false);
+      },
+    });
   }
 
-   updatePost(post: Post): Observable<Post> {
-    this._loading.set(true);
-    return this.postService.updatePost(post.id!, post).pipe(
-      tap(() => {
-        this._loading.set(false);
-      }),
-    );
+  resetAddteState() {
+    this._addSuccess.set(false);
   }
 
   resetFilters() {
     this._filters.set({
       userId: null,
-      tag: null
+      tag: null,
     });
     this.searchInput.set('');
   }
 
   setFilter(filter: PostFiltersForm) {
-    console.log(filter)
     this._filters.update(() => filter);
   }
 }

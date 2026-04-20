@@ -1,15 +1,17 @@
 import { Component, inject, computed, DestroyRef } from '@angular/core';
-
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CardPosts } from '../../components/card-posts/card-posts';
 import { CommonModule } from '@angular/common';
 import { PaginationPost } from '../../components/pagination-posts/pagination-posts';
 import { FiltersPosts, PostFiltersForm } from '../../components/filters-posts/filters-posts';
 import { Router } from '@angular/router';
 import { PostsStore } from '../../store/posts.store';
+import { I18N_IMPORTS } from '../../../../shared/shared-imports';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-posts',
-  imports: [CardPosts, FiltersPosts, CommonModule, PaginationPost],
+  imports: [CardPosts, FiltersPosts, CommonModule, PaginationPost, I18N_IMPORTS],
   templateUrl: './posts.html',
   standalone: true,
 })
@@ -17,6 +19,7 @@ export class Posts {
   readonly countPost = 10;
   storePosts = inject(PostsStore);
   router = inject(Router);
+  private translate = inject(TranslateService);
 
   posts = this.storePosts.posts;
   loading = this.storePosts.loading;
@@ -37,14 +40,20 @@ export class Posts {
   destroyRef = inject(DestroyRef);
 
   constructor() {
-    // siempre que navega limpia los filtros
-    this.destroyRef.onDestroy(() => {
-      this.storePosts.resetFilters();
-    });
+    this.storePosts.resetFilters();
   }
 
+  private resultsTranslation = toSignal(this.translate.stream('RESULTS.SHOWING'), {
+    initialValue: '',
+  });
+
   resultsText = computed(() => {
-    return `Mostrando ${this.posts().length} de ${this.totalItems()} resultados`;
+    const template = this.resultsTranslation();
+
+    const shown = this.posts().length;
+    const total = this.totalItems();
+
+    return template.replace('{{shown}}', String(shown)).replace('{{total}}', String(total));
   });
 
   setFilter(filters: PostFiltersForm) {

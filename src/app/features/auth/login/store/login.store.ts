@@ -1,11 +1,7 @@
 import { Injectable, signal, inject, effect, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth.service';
-
-interface User {
-  id: number;
-  name: string;
-}
+import { LoginUser, User } from '../models/login-user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
@@ -16,7 +12,7 @@ export class AuthStore {
   private _currentUser = signal<User | null>(this.getUserFromStorage());
   private _loading = signal(false);
   private _error = signal<string | null>(null);
-  private _loginPayload = signal<{ name: string; password: string } | null>(null);
+  private _loginPayload = signal<LoginUser | null>(null);
 
   // selectors
   currentUser = this._currentUser.asReadonly();
@@ -52,7 +48,7 @@ export class AuthStore {
     });
   }
 
-  login(data: { name: string; password: string }) {
+  login(data: LoginUser) {
     this._loginPayload.set(data);
   }
 

@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Comment } from '../models/comment.model';
+import { Enviroment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CommentsService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = Enviroment.apiUrl;
 
   getComments(postId: number) {
     return this.http.get<Comment[]>(`${this.baseUrl}/comments?postId=${postId}&_expand=user`);

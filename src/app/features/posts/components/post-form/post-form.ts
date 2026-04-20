@@ -1,29 +1,33 @@
-import { Component, Output, EventEmitter, signal, inject } from '@angular/core';
+import { Component, signal, inject, effect, output } from '@angular/core';
 import { CreatePost, PostFormData } from '../../models/create-post.model';
 import { form, FormField, required } from '@angular/forms/signals';
 import { CommonModule } from '@angular/common';
 import { PostsStore } from '../../store/posts.store';
 import { Post } from '../../models/posts.model';
-
-
+import { I18N_IMPORTS } from '../../../../shared/shared-imports';
+import { PostSelectStore } from '../../store/select-post.store';
 
 @Component({
   selector: 'app-post-form',
   standalone: true,
-  imports: [CommonModule, FormField],
+  imports: [CommonModule, FormField, I18N_IMPORTS],
   templateUrl: './post-form.html',
 })
 export class PostFormComponent {
   storePosts = inject(PostsStore);
+  storeSelectPost = inject(PostSelectStore);
+  titleText = '';
 
-  @Output() submitPost = new EventEmitter<CreatePost>();
-  @Output() submitPostUpdate = new EventEmitter<Post>();
-  @Output() cancelPost = new EventEmitter<void>();
+  submitPost = output<CreatePost>();
+  submitPostUpdate = output<Post>();
+  cancelPost = output<void>();
+
+  post = this.storeSelectPost.post;
 
   postModel = signal<PostFormData>({
     title: '',
     body: '',
-    tags: ''
+    tags: '',
   });
 
   postForm = form(this.postModel, (schemaPath) => {
@@ -40,19 +44,25 @@ export class PostFormComponent {
     });
   });
 
-  constructor(){
-   const post = this.storePosts.selectedPost();
+  constructor() {
+    effect(() => {
+      const currentPost = this.post();
 
-if (post) {
-  const { title, body, tags } = post;
-
-  this.postModel.set({
-    title,
-    body,
-    tags: tags.join(', ')
-  });
-}
-}
+      if (currentPost) {
+        this.postModel.set({
+          title: currentPost.title,
+          body: currentPost.body,
+          tags: currentPost.tags.join(', '),
+        });
+      } else {
+        this.postModel.set({
+          title: '',
+          body: '',
+          tags: '',
+        });
+      }
+    });
+  }
 
   submit() {
     if (!this.postForm().valid()) {
@@ -62,7 +72,6 @@ if (post) {
 
       return;
     } else {
-       const post = this.storePosts.selectedPost();
       const tagsArray = this.postForm
         .tags()
         .value()
@@ -70,21 +79,21 @@ if (post) {
         .map((t) => t.trim())
         .filter((t) => t.length > 0);
 
-
-if (post) {
-  this.submitPostUpdate.emit({
-        ...post,
-        title: this.postForm.title().value(),
-        body: this.postForm.body().value(),
-        tags: tagsArray
-      });
-} else {
-  this.submitPost.emit({
-        title: this.postForm.title().value(),
-        body: this.postForm.body().value(),
-        tags: tagsArray
-      });
+      const currentPost = this.post();
+      if (currentPost) {
+        this.submitPostUpdate.emit({
+          ...currentPost,
+          title: this.postForm.title().value(),
+          body: this.postForm.body().value(),
+          tags: tagsArray,
+        });
+      } else {
+        this.submitPost.emit({
+          title: this.postForm.title().value(),
+          body: this.postForm.body().value(),
+          tags: tagsArray,
+        });
+      }
     }
-  }
   }
 }

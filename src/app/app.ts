@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ConfirmModal } from './shared/confirm-modal/confirm-modal';
+import { ConfirmModal } from './shared/components/confirm-modal/confirm-modal';
 
 @Component({
   selector: 'app-root',

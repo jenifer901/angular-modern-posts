@@ -1,0 +1,22 @@
+<header class="w-full border-b border-slate-200 bg-slate-50">
+  <div class="mx-auto flex items-center justify-between px-4 py-3">
+    <div class="text-base font-semibold tracking-tight text-slate-800">
+      {{ techpoc }}
+    </div>
+    <div class="flex items-center gap-3">
+      <!-- buscador-->
+      @if (showSearch()) {
+        <app-search-post />
+      }
+      <app-language-switcher />
+      <div>
+        <!-- logout -->
+        @if (authStore.isAuthenticated()) {
+          <button class="text-black-500 text-sm flex items-center gap-1" (click)="logout()">
+            {{ 'HEADER.EXIT' | translate }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</header>
