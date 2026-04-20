@@ -32,7 +32,7 @@ export class PostSelectStore {
     };
   });
 
-  post = this._postResource.value;
+  post = computed(() => this._postResource.value());
   loading = this._postResource.isLoading;
   error = this._postResource.error;
 
@@ -40,8 +40,8 @@ export class PostSelectStore {
 
   //isForbidden es como se tiene que llamar
   isOwner = computed(() => {
-    const post = this.post?.();
-    const userId = this.authStore.userId?.();
+    const post = this.post();
+    const userId = this.authStore.userId();
 
     if (!post || !userId) return null;
 

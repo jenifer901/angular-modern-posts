@@ -1,10 +1,10 @@
 import { Component, inject, effect, signal } from '@angular/core';
 import { CommentsListComponent } from '../../../comments/comments';
 import { ModalService } from '../../../../shared/service/confirm-modal-data.service';
-import { AuthService } from '../../../../core/auth/auth.service';
 import { I18N_IMPORTS } from '../../../../shared/shared-imports';
 import { PostSelectStore } from '../../store/select-post.store';
 import { Router } from '@angular/router';
+import { AuthStore } from '../../../auth/login/store/login.store';
 
 @Component({
   selector: 'app-detail-post',
@@ -14,11 +14,11 @@ import { Router } from '@angular/router';
 })
 export class DetailPost {
   private modal = inject(ModalService);
-  authService = inject(AuthService);
+  authStore = inject(AuthStore);
   store = inject(PostSelectStore);
   router = inject(Router);
 
-  userId = Number(this.authService.getUserId());
+  userId = Number(this.authStore.userId());
 
   post = this.store.post;
   loading = this.store.loading;

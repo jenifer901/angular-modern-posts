@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginResponse } from '../models/auth.types';
@@ -14,13 +14,16 @@ export class AuthService {
   private router = inject(Router);
   private http = inject(HttpClient);
 
+  private _userId = signal<string | null>(localStorage.getItem('userId'));
+  userId = this._userId.asReadonly();
+
   login(name: string, password: string): Observable<LoginResponse> {
     // json-server no hace auth real: lo simulamos consultando users
     return new Observable((observer) => {
       this.http.get<Login[]>(`${this.baseUrl}/users`).subscribe({
         next: (users) => {
           const u = users.find((x) => x.name === name && x.password === password);
-          console.log(u)
+
           if (!u) {
             observer.error({ status: 401 });
             return;
@@ -32,6 +35,8 @@ export class AuthService {
           localStorage.setItem('userId', String(u.id));
           localStorage.setItem('userName', u.name);
 
+          this._userId.set(String(u.id));
+
           observer.next({ token, userId: u.id, name: u.name });
           observer.complete();
         },
@@ -40,22 +45,11 @@ export class AuthService {
     });
   }
 
-  getUserId(): string | null {
-    return localStorage.getItem('userId');
-  }
-
-  getUserName(): string | null {
-    return localStorage.getItem('userName');
-  }
-
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
-  }
-
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('userName');
+    this._userId.set(null);
     this.router.navigate(['/login']);
   }
 }

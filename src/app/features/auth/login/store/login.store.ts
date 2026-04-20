@@ -1,7 +1,7 @@
-import { Injectable, signal, inject, effect, computed } from '@angular/core';
+import { Injectable, signal, inject, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/auth/auth.service';
-import { LoginUser, User } from '../models/login-user';
+import { LoginUser } from '../models/login-user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStore {
@@ -9,53 +9,33 @@ export class AuthStore {
   private router = inject(Router);
 
   // state
-  private _currentUser = signal<User | null>(this.getUserFromStorage());
   private _loading = signal(false);
   private _error = signal<string | null>(null);
-  private _loginPayload = signal<LoginUser | null>(null);
 
   // selectors
-  currentUser = this._currentUser.asReadonly();
   loading = this._loading.asReadonly();
   error = this._error.asReadonly();
 
   isAuthenticated = computed(() => {
-    return !!localStorage.getItem('token');
+    return !!this.userId();
   });
 
-  userId = computed(() => this.authService.getUserId());
-
-  constructor() {
-    effect(() => {
-      const credentials = this._loginPayload();
-      if (!credentials) return;
-
-      this._loading.set(true);
-      this._error.set(null);
-
-      this.authService.login(credentials.name, credentials.password).subscribe({
-        next: () => {
-          this._loading.set(false);
-
-          this.router.navigate(['/posts']);
-        },
-
-        error: () => {
-          this._loading.set(false);
-          this._error.set('Invalid credentials');
-        },
-      });
-    });
-  }
+  userId = this.authService.userId;
 
   login(data: LoginUser) {
-    this._loginPayload.set(data);
-  }
+     this._loading.set(true);
+  this._error.set(null);
 
-  private getUserFromStorage(): User | null {
-    const stored = localStorage.getItem('user');
-
-    return stored ? JSON.parse(stored) : null;
+  this.authService.login(data.name, data.password).subscribe({
+    next: () => {
+      this._loading.set(false);
+      this.router.navigate(['/posts']);
+    },
+    error: () => {
+      this._loading.set(false);
+      this._error.set('Invalid credentials');
+    },
+  });
   }
 
   logout() {
