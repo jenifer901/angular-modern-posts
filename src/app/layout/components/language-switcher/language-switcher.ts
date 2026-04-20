@@ -7,7 +7,6 @@ import { I18N_IMPORTS } from '../../../shared/shared-imports';
   selector: 'app-language-switcher',
   imports: [NgClass, I18N_IMPORTS],
   templateUrl: './language-switcher.html',
-  styleUrl: './language-switcher.css',
   standalone: true,
 })
 export class LanguageSwitcher {

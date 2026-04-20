@@ -40,12 +40,12 @@ export class PostSelectStore {
 
   //isForbidden es como se tiene que llamar
   isOwner = computed(() => {
-    const post = this.post;
-    const userId = this.authStore.userId;
+    const post = this.post?.();
+    const userId = this.authStore.userId?.();
 
     if (!post || !userId) return null;
 
-    return Number(post()?.userId) === Number(userId());
+    return Number(post.userId) === Number(userId);
   });
 
   updatePost(post: Post): void {

@@ -20,6 +20,7 @@ export class AuthService {
       this.http.get<Login[]>(`${this.baseUrl}/users`).subscribe({
         next: (users) => {
           const u = users.find((x) => x.name === name && x.password === password);
+          console.log(u)
           if (!u) {
             observer.error({ status: 401 });
             return;
