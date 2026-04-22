@@ -20,7 +20,7 @@
     [value]="filtersModel().tag"
     (change)="updateSelect($event, 'tag')"
   >
-    <option [value]="null">{{ 'FILTER.TAGS' | translate }}</option>
+    <option [value]="">{{ 'FILTER.TAGS' | translate }}</option>
 
     @for (tag of tags(); track tag) {
       <option [value]="tag">

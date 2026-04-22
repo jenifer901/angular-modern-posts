@@ -1,13 +1,13 @@
 export interface Comment {
-  id: number;
+  id: string;
   postId: string;
-  userId: number;
+  userId: string | null;
   body: string;
   createdAt: string;
   user?: User;
 }
 
 export interface User {
-  id: number;
+  id: string;
   name: string;
 }

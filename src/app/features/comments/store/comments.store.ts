@@ -3,14 +3,16 @@ import { httpResource } from '@angular/common/http';
 import { Comment } from '../models/comment.model';
 import { CommentsService } from '../service/comments.service';
 import { Enviroment } from '../../../../environments/environment';
+import { AuthStore } from '../../auth/login/store/login.store';
 
 @Injectable()
 export class CommentsStore {
+  private authStore = inject(AuthStore);
   private commentsService = inject(CommentsService);
 
   postId = signal<string | null>(null);
 
-  editingCommentId = signal<number | null>(null);
+  editingCommentId = signal<string | null>(null);
 
   editText = signal('');
 
@@ -21,8 +23,10 @@ export class CommentsStore {
       ? {
           url: `${Enviroment.apiUrl}/comments`,
           params: {
-            postId: id,
-            _expand: 'user',
+            _where: JSON.stringify({
+              postId: { eq: String(id) },
+            }),
+            _embed: 'user',
           },
         }
       : undefined;
@@ -38,7 +42,7 @@ export class CommentsStore {
   }
 
   createComment(body: string) {
-    const userId = Number(localStorage.getItem('userId'));
+    const userId = this.authStore.userId();
     const postId = this.postId();
     if (!postId) return;
 
@@ -56,9 +60,9 @@ export class CommentsStore {
   }
 
   deleteComment(comment: Comment) {
-    const loggedUser = Number(localStorage.getItem('userId'));
+    const loggedUserId = this.authStore.userId();
 
-    if (comment.userId !== loggedUser) return;
+    if (comment.userId !== loggedUserId) return;
 
     this.commentsService.deleteComment(comment.id).subscribe(() => this.commentsResource.reload());
   }
@@ -72,7 +76,7 @@ export class CommentsStore {
     this.editingCommentId.set(null);
   }
 
-  updateComment(id: number, body: string) {
+  updateComment(id: string, body: string) {
     this.commentsService.updateComment(id, body).subscribe(() => {
       this.commentsResource.reload();
     });

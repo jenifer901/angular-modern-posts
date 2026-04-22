@@ -1,15 +1,16 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Post } from '../models/posts.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Post, PostsPagination } from '../models/posts.model';
 import { CreatePost } from '../models/create-post.model';
+import { Enviroment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostsService {
-  private readonly baseUrl = 'http://localhost:3000';
+  private readonly baseUrl = Enviroment.apiUrl;
 
   http = inject(HttpClient);
 
@@ -17,8 +18,8 @@ export class PostsService {
     return this.http.get<Post>(`${this.baseUrl}/posts/${id}`);
   }
 
-  loadPosts(params: HttpParams): Observable<HttpResponse<Post[]>> {
-    return this.http.get<Post[]>(`${this.baseUrl}/posts`, { params, observe: 'response' });
+  loadPosts(params: HttpParams): Observable<PostsPagination> {
+    return this.http.get<PostsPagination>(`${this.baseUrl}/posts`, { params });
   }
 
   createPosts(post: CreatePost): Observable<Post> {

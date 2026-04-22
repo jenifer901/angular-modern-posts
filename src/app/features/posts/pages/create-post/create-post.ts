@@ -1,7 +1,7 @@
 import { Component, inject, effect } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostsStore } from '../../store/posts.store';
-import { CreatePost } from '../../models/create-post.model';
+import { CreatePost, ModeFormPost } from '../../models/create-post.model';
 import { PostFormComponent } from '../../components/post-form/post-form';
 import { TranslateModule } from '@ngx-translate/core';
 
@@ -14,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class CreatePostPageComponent {
   private storePosts = inject(PostsStore);
   private router = inject(Router);
+  modeForm = ModeFormPost.create;
 
   loading = this.storePosts.loading;
 

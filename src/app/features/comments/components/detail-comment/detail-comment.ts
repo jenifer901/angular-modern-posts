@@ -16,7 +16,7 @@ export class DetailComment {
 
   comment = input.required<Comment>();
 
-  userId = input.required<number>();
+  userId = input.required<string | null>();
 
   openDeleteModal() {
     this.modal.open({
@@ -51,7 +51,7 @@ export class DetailComment {
     this.store.startEdit(this.comment());
   }
 
-  saveEdit(id: number) {
+  saveEdit(id: string) {
     const body = this.store.editText();
 
     this.store.updateComment(id, body);

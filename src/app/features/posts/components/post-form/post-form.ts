@@ -1,5 +1,5 @@
-import { Component, signal, inject, effect, output } from '@angular/core';
-import { CreatePost, PostFormData } from '../../models/create-post.model';
+import { Component, signal, inject, effect, output, input } from '@angular/core';
+import { CreatePost, ModeFormPost, PostFormData } from '../../models/create-post.model';
 import { form, FormField, required } from '@angular/forms/signals';
 import { CommonModule } from '@angular/common';
 import { PostsStore } from '../../store/posts.store';
@@ -21,6 +21,7 @@ export class PostFormComponent {
   submitPost = output<CreatePost>();
   submitPostUpdate = output<Post>();
   cancelPost = output<void>();
+  mode = input.required<ModeFormPost>();
 
   post = this.storeSelectPost.post;
 
@@ -48,7 +49,7 @@ export class PostFormComponent {
     effect(() => {
       const currentPost = this.post();
 
-      if (currentPost) {
+      if (currentPost && this.mode() === ModeFormPost.edit) {
         this.postModel.set({
           title: currentPost.title,
           body: currentPost.body,
@@ -80,7 +81,7 @@ export class PostFormComponent {
         .filter((t) => t.length > 0);
 
       const currentPost = this.post();
-      if (currentPost) {
+      if (currentPost && this.mode() === ModeFormPost.edit) {
         this.submitPostUpdate.emit({
           ...currentPost,
           title: this.postForm.title().value(),

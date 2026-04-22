@@ -5,7 +5,7 @@ import { AuthStore } from '../../features/auth/login/store/login.store';
 
 export const ownerGuard: CanActivateFn = () => {
   const store = inject(PostSelectStore);
-  const auth = inject(AuthStore)
+  const auth = inject(AuthStore);
   const router = inject(Router);
 
   const post = store.post;

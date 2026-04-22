@@ -5,6 +5,7 @@ import { Post } from '../../models/posts.model';
 import { PostSelectStore } from '../../store/select-post.store';
 import { I18N_IMPORTS } from '../../../../shared/shared-imports';
 import { ModalService } from '../../../../shared/service/confirm-modal-data.service';
+import { ModeFormPost } from '../../models/create-post.model';
 
 @Component({
   selector: 'app-edit-post',
@@ -15,6 +16,7 @@ export class EditPost {
   storePost = inject(PostSelectStore);
   private router = inject(Router);
   private modal = inject(ModalService);
+  modeForm = ModeFormPost.edit;
 
   loading = this.storePost.loading;
 
@@ -48,6 +50,6 @@ export class EditPost {
   }
 
   goBack() {
-    this.router.navigate([`/posts/${this.postId}`]);
+    this.router.navigate([`/posts/${this.postId}`], { replaceUrl: true });
   }
 }

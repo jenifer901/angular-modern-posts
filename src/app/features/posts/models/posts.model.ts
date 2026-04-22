@@ -2,7 +2,7 @@ import { User } from '../../../core/models/user.model';
 
 export interface Post {
   id: string | null;
-  userId: number;
+  userId: string;
   title: string;
   body: string;
   tags: string[];

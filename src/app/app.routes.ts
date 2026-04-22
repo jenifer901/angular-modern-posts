@@ -7,7 +7,7 @@ import { postResolver } from './core/resolvers/post.resolver';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('../app/layout/layout').then(m => m.Layout),
+    loadComponent: () => import('../app/layout/layout').then((m) => m.Layout),
     children: [
       {
         path: 'login',
@@ -33,14 +33,14 @@ export const routes: Routes = [
           {
             path: ':id',
             resolve: {
-            post: postResolver
-          },
+              post: postResolver,
+            },
             loadComponent: () =>
               import('./features/posts/pages/detail-post/detail-post').then((m) => m.DetailPost),
           },
           {
             path: ':id/edit',
-             canActivate: [authGuard, ownerGuard], 
+            canActivate: [authGuard, ownerGuard],
             loadComponent: () =>
               import('./features/posts/pages/edit-post/edit-post').then((m) => m.EditPost),
           },

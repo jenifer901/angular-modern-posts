@@ -13,7 +13,11 @@
   @if (!loading()) {
     <!-- formulario -->
     <div class="bg-white rounded-lg">
-      <app-post-form (submitPostUpdate)="updatePost($event)" (cancelPost)="goBack()" />
+      <app-post-form
+        [mode]="modeForm"
+        (submitPostUpdate)="updatePost($event)"
+        (cancelPost)="goBack()"
+      />
     </div>
   }
 </div>

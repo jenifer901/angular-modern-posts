@@ -20,7 +20,7 @@ export class CommentsListComponent {
   isEmpty = this.store.isEmpty;
 
   postId = input<string | null>();
-  userId = input.required<number>();
+  userId = input.required<string | null>();
 
   constructor() {
     effect(() => {

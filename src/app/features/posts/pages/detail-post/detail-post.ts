@@ -18,7 +18,7 @@ export class DetailPost {
   store = inject(PostSelectStore);
   router = inject(Router);
 
-  userId = Number(this.authStore.userId());
+  userId = this.authStore.userId();
 
   post = this.store.post;
   loading = this.store.loading;
@@ -28,7 +28,6 @@ export class DetailPost {
   showDeleteModal = signal(false);
 
   constructor() {
-    console.log(this.isOwner())
     effect(() => {
       if (this.store.deleteSuccess()) {
         this.router.navigate(['/posts']);

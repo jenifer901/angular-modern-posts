@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi } from 'vitest';
 import { TestBed } from '@angular/core/testing';
 import { authGuard } from './auth.guard';
@@ -24,9 +23,7 @@ describe('authGuard', () => {
       ],
     });
 
-    const result = TestBed.runInInjectionContext(() =>
-      authGuard({} as never, {} as never)
-    );
+    const result = TestBed.runInInjectionContext(() => authGuard({} as never, {} as never));
 
     expect(result).toBe(true);
   });
@@ -51,9 +48,7 @@ describe('authGuard', () => {
       ],
     });
 
-    const result = TestBed.runInInjectionContext(() =>
-      authGuard({} as never, {} as never)
-    );
+    const result = TestBed.runInInjectionContext(() => authGuard({} as never, {} as never));
 
     expect(result).toBe(false);
     expect(navigateMock).toHaveBeenCalledWith(['/login']);

@@ -10,3 +10,8 @@ export interface PostFormData {
   body: string;
   tags: string;
 }
+
+export enum ModeFormPost {
+  'edit',
+  'create',
+}

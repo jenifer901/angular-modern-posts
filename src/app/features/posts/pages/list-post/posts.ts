@@ -3,11 +3,13 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { CardPosts } from '../../components/card-posts/card-posts';
 import { CommonModule } from '@angular/common';
 import { PaginationPost } from '../../components/pagination-posts/pagination-posts';
-import { FiltersPosts, PostFiltersForm } from '../../components/filters-posts/filters-posts';
+import { FiltersPosts } from '../../components/filters-posts/filters-posts';
 import { Router } from '@angular/router';
 import { PostsStore } from '../../store/posts.store';
 import { I18N_IMPORTS } from '../../../../shared/shared-imports';
 import { TranslateService } from '@ngx-translate/core';
+import { PostFiltersForm } from '../../models/filter-post.model';
+import { FiltersStore } from '../../store/filters-post.store';
 
 @Component({
   selector: 'app-posts',
@@ -18,6 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class Posts {
   readonly countPost = 10;
   storePosts = inject(PostsStore);
+  storeFilters = inject(FiltersStore);
   router = inject(Router);
   private translate = inject(TranslateService);
 
@@ -25,8 +28,8 @@ export class Posts {
   loading = this.storePosts.loading;
 
   // 🔹 derivados
-  authorFilter = this.storePosts.authors;
-  tagFilter = this.storePosts.tags;
+  authorFilter = this.storeFilters.authors;
+  tagFilter = this.storeFilters.tags;
   currentPage = this.storePosts.currentPage;
   totalPages = this.storePosts.pages;
   hasNext = this.storePosts.hasNext;

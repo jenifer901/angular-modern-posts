@@ -8,7 +8,7 @@ import { Post } from '../models/posts.model';
 
 const createMockPost = (): Post => ({
   id: '1',
-  userId: 1,
+  userId: '1',
   title: 'test',
   body: 'body',
   tags: [],

@@ -3,10 +3,7 @@ import { form } from '@angular/forms/signals';
 import { FormsModule } from '@angular/forms';
 import { SelectAuthor } from '../../models/select-author.model';
 import { I18N_IMPORTS } from '../../../../shared/shared-imports';
-export interface PostFiltersForm {
-  userId: string | null;
-  tag: string | null;
-}
+import { PostFiltersForm } from '../../models/filter-post.model';
 
 @Component({
   selector: 'app-filters-posts',
@@ -33,7 +30,7 @@ export class FiltersPosts {
 
     this.filtersModel.update((v) => ({
       ...v,
-      [key]: value,
+      [key]: value || null,
     }));
     this.filtersChange.emit(this.filtersModel());
   }

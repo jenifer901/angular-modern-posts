@@ -23,19 +23,19 @@ export class AuthStore {
   userId = this.authService.userId;
 
   login(data: LoginUser) {
-     this._loading.set(true);
-  this._error.set(null);
+    this._loading.set(true);
+    this._error.set(null);
 
-  this.authService.login(data.name, data.password).subscribe({
-    next: () => {
-      this._loading.set(false);
-      this.router.navigate(['/posts']);
-    },
-    error: () => {
-      this._loading.set(false);
-      this._error.set('Invalid credentials');
-    },
-  });
+    this.authService.login(data.name, data.password).subscribe({
+      next: () => {
+        this._loading.set(false);
+        this.router.navigate(['/posts']);
+      },
+      error: () => {
+        this._loading.set(false);
+        this._error.set('Invalid credentials');
+      },
+    });
   }
 
   logout() {

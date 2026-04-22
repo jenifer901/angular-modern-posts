@@ -1,11 +1,11 @@
-import { Injectable, signal, computed, inject, effect } from '@angular/core';
-import { Post, PostsPagination } from '../models/posts.model';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { PostsPagination } from '../models/posts.model';
 import { PostsService } from '../services/posts.service';
-import { HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpParams, httpResource } from '@angular/common/http';
 import { CreatePost } from '../models/create-post.model';
-import { PostFiltersForm } from '../components/filters-posts/filters-posts';
 import { AuthStore } from '../../auth/login/store/login.store';
-import { SelectAuthor } from '../models/select-author.model';
+import { Enviroment } from '../../../../environments/environment';
+import { PostFiltersForm } from '../models/filter-post.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +13,6 @@ import { SelectAuthor } from '../models/select-author.model';
 export class PostsStore {
   private postService = inject(PostsService);
   private authService = inject(AuthStore);
-
-  private _response = signal<PostsPagination | null>(null);
-  private _loading = signal(false);
   private _page = signal(1);
   private _filters = signal<{
     userId?: string | null;
@@ -24,119 +21,74 @@ export class PostsStore {
 
   searchInput = signal<string>('');
 
-  posts = computed(() => this._response()?.data ?? []);
-  pages = computed(() => this._response()?.pages ?? 0);
-  currentPage = computed(() => this._page());
-  hasNext = computed(() => !!this._response()?.next);
-  hasPrev = computed(() => !!this._response()?.prev);
-  loading = computed(() => this._loading());
-  items = computed(() => this._response()?.items ?? 0);
-
-  authors = computed(() => {
-    const posts = this.posts();
-    const authorsArray = new Map();
-    posts.forEach((p) => {
-      authorsArray.set(p.userId, p.user?.name);
-    });
-
-    return Array.from(authorsArray.entries()).map(
-      ([id, name]) =>
-        ({
-          id,
-          name,
-        }) as SelectAuthor,
-    );
-  });
-
-  tags = computed(() => {
-    const posts = this.posts();
-    const allTags = posts.flatMap((p) => p.tags ?? []);
-    return [...new Set(allTags)];
-  });
-
   private _addSuccess = signal<boolean>(false);
   addSuccess = this._addSuccess.asReadonly();
 
-  constructor() {
-    effect(() => {
-      this._filters(); // dependencia reactiva
-      this.searchInput();
-      this.loadPosts(1); // reset página al filtrar
-    });
-  }
-
-  loadPosts(page: number): void {
-    this._loading.set(true);
+  postsResource = httpResource<PostsPagination>(() => {
+    const page = this._page();
     const f = this._filters();
+    const search = this.searchInput();
 
     let params = new HttpParams()
       .set('_page', page)
       .set('_per_page', 10)
       .set('_sort', '-views')
-      .set('_expand', 'user');
+      .set('_embed', 'user');
+
+    const where: {
+      userId?: { eq: string };
+      tags?: { contains: string };
+      or?: { title?: { contains: string }; body?: { contains: string } }[];
+    } = {};
 
     if (f.userId) {
-      params = params.append('userId', f.userId);
+      where.userId = { eq: String(f.userId) };
     }
 
     if (f.tag) {
-      params = params.append('tags_like', f.tag);
+      where.tags = { contains: f.tag };
     }
 
-    if (this.searchInput()) {
-      params = params.append('q', this.searchInput());
+    if (search) {
+      where.or = [{ title: { contains: search } }, { body: { contains: search } }];
     }
 
-    this.postService.loadPosts(params).subscribe({
-      next: (res: HttpResponse<Post[]>) => {
-        this.getPagination(page, res);
-      },
-      error: () => this._loading.set(false),
-    });
-  }
+    if (Object.keys(where).length > 0) {
+      params = params.set('_where', JSON.stringify(where));
+    }
 
-  getPagination(page: number, res: HttpResponse<Post[]>) {
-    const items = Number(res.headers.get('X-Total-Count'));
-    const pages = Math.ceil(items / 10);
-    const obj: PostsPagination = {
-      first: 1,
-      last: items,
-      items,
-      data: res.body ?? [],
-      next: page + 1 <= pages ? page + 1 : null,
-      pages,
-      prev: page - 1 >= 1 ? page - 1 : null,
+    return {
+      url: `${Enviroment.apiUrl}/posts`,
+      params,
     };
-    this._response.set(obj);
-    this._page.set(page);
-    this._loading.set(false);
-  }
+  });
+
+  posts = computed(() => this.postsResource.value()?.data ?? []);
+  pages = computed(() => this.postsResource.value()?.pages ?? 0);
+  currentPage = computed(() => this._page());
+  hasNext = computed(() => !!this.postsResource.value()?.next);
+  hasPrev = computed(() => !!this.postsResource.value()?.prev);
+  loading = this.postsResource.isLoading;
+  items = computed(() => this.postsResource.value()?.items ?? 0);
 
   nextPage() {
-    const next = this._response()?.next;
-    if (next) this.loadPosts(next);
+    const next = this.postsResource.value()?.next;
+    if (next) this._page.set(next);
   }
 
   prevPage() {
-    const prev = this._response()?.prev;
-    if (prev) this.loadPosts(prev);
+    const prev = this.postsResource.value()?.prev;
+    if (prev) this._page.set(prev);
   }
 
   goToPage(page: number) {
-    this.loadPosts(page);
+    this._page.set(page);
   }
 
   addPosts(post: CreatePost): void {
-    this._loading.set(true);
-    this.postService.createPosts({ ...post, userId: this.authService.userId() }).subscribe({
-      next: () => {
-        this._addSuccess.set(true);
-        this._loading.set(false);
-      },
-      error: () => {
-        this._loading.set(false);
-      },
-    });
+    this.postService
+      .createPosts({ ...post, userId: this.authService.userId() })
+      .subscribe(() => this._addSuccess.set(true));
   }
 
   resetAddteState() {
@@ -149,9 +101,11 @@ export class PostsStore {
       tag: null,
     });
     this.searchInput.set('');
+    this._page.set(1);
   }
 
   setFilter(filter: PostFiltersForm) {
-    this._filters.update(() => filter);
+    this._filters.set(filter);
+    this._page.set(1);
   }
 }

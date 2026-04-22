@@ -16,11 +16,11 @@ export class CommentsService {
     return this.http.post<Comment>(`${this.baseUrl}/comments`, comment);
   }
 
-  deleteComment(id: number) {
+  deleteComment(id: string) {
     return this.http.delete(`${this.baseUrl}/comments/${id}`);
   }
 
-  updateComment(id: number, body: string) {
+  updateComment(id: string, body: string) {
     return this.http.patch<Comment>(`${this.baseUrl}/comments/${id}`, { body });
   }
 }
