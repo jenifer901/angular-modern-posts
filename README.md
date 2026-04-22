@@ -1,9 +1,14 @@
-Angular Posts App
+# Angular Posts App
+
 SPA desarrollada con Angular 21 para la gestión de posts y comentarios sobre un backend mock basado en json-server.
 
 El objetivo es aplicar un enfoque moderno de Angular priorizando simplicidad, mantenibilidad y buenas prácticas.
 
-Ejecución
+---
+
+## Ejecución
+
+```bash
 npm install
 npm run dev
 Frontend: http://localhost:4200
@@ -47,8 +52,7 @@ Testing: Vitest + Testing Library + Playwright
 Backend
 Se utiliza json-server con db.json como fuente de datos.
 
-Relaciones:
-
+Relaciones
 users
 
 posts (userId)
